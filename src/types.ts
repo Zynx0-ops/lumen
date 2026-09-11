@@ -1,9 +1,10 @@
 /**
  * Content model for the learning path.
  *
- * A Course holds Sections, a Section holds Modules, a Module holds Exercises.
- * Everything here is plain data — see `src/data/course.ts` for the sample
- * Spanish course and swap in real content by matching these shapes.
+ * A Course holds Sections, a Section holds Modules, and a Module is one lesson
+ * split into Parts of Exercises. Everything here is plain data — see
+ * `src/data/` for the shipped courses, and swap in real content by matching
+ * these shapes.
  */
 
 export type ExerciseType = 'multiple-choice' | 'fill-blank' | 'matching'
@@ -48,12 +49,23 @@ export type Exercise =
   | FillBlankExercise
   | MatchingExercise
 
+/** A stretch of a lesson worked through in one go, e.g. "Words". */
+export interface LessonPart {
+  id: string
+  title: string
+  exercises: Exercise[]
+}
+
 export interface Module {
   id: string
   title: string
   /** One-line description of what the module covers. */
   subtitle: string
-  exercises: Exercise[]
+  /**
+   * A module is a single sitting split into parts — Words, then Sentences —
+   * with a short break between them. The tuple type insists on at least two.
+   */
+  parts: [LessonPart, LessonPart, ...LessonPart[]]
 }
 
 /** Accent keys resolve to hex values in `ACCENTS`. */

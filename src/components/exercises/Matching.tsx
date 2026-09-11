@@ -12,12 +12,13 @@ export function Matching({
   locked,
   onDraft,
   onAutoSubmit,
+  seed,
 }: ExerciseProps<MatchingExercise>) {
-  // Seeded on the exercise id: stable across re-renders, varied across exercises.
+  // Stable across re-renders, different on every showing.
   const [rightOrder] = useState(() =>
     seededShuffle(
       exercise.pairs.map((_, i) => i),
-      exercise.id,
+      seed,
     ),
   )
 

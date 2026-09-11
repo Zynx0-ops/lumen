@@ -1,5 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { CheckIcon } from '../ui/Icons'
+import { seededShuffle } from '../../lib/shuffle'
 import type { ExerciseProps } from './types'
 import type { MultipleChoiceExercise } from '../../types'
 
@@ -14,21 +15,33 @@ export function MultipleChoice({
   onDraft,
   locked,
   verdict,
+  seed,
 }: ExerciseProps<MultipleChoiceExercise>) {
   const selected = draft?.kind === 'choice' ? draft.index : null
 
-  // 1–4 select an option, matching the on-tile numerals.
+  // Display order, as indices into `options`. Authors can list the right
+  // answer first; this is what stops it always appearing there.
+  const order = useMemo(
+    () =>
+      seededShuffle(
+        exercise.options.map((_, i) => i),
+        seed,
+      ),
+    [exercise.options, seed],
+  )
+
+  // 1–4 pick by on-screen position, matching the numerals on the tiles.
   useEffect(() => {
     if (locked) return
     function onKey(event: KeyboardEvent) {
       const n = Number(event.key)
-      if (Number.isInteger(n) && n >= 1 && n <= exercise.options.length) {
-        onDraft({ kind: 'choice', index: n - 1 })
+      if (Number.isInteger(n) && n >= 1 && n <= order.length) {
+        onDraft({ kind: 'choice', index: order[n - 1] })
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [exercise.options.length, locked, onDraft])
+  }, [locked, onDraft, order])
 
   return (
     <div className="flex flex-col gap-7">
@@ -48,7 +61,8 @@ export function MultipleChoice({
         role="radiogroup"
         aria-label={exercise.prompt}
       >
-        {exercise.options.map((option, index) => {
+        {order.map((index, position) => {
+          const option = exercise.options[index]
           const isSelected = selected === index
           const isAnswer = index === exercise.answer
 
@@ -89,11 +103,7 @@ export function MultipleChoice({
                         : 'border-hairline text-faint'
                 }`}
               >
-                {revealCorrect ? (
-                  <CheckIcon className="size-4" />
-                ) : (
-                  index + 1
-                )}
+                {revealCorrect ? <CheckIcon className="size-4" /> : position + 1}
               </span>
               <span className="text-[16px] font-medium">{option}</span>
             </button>

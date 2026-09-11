@@ -1,3 +1,4 @@
+import { choose, defineModule, fill, match, part } from './build'
 import type { Course } from '../types'
 
 /**
@@ -22,287 +23,290 @@ export const japanese: Course = {
       subtitle: 'Greet someone, order tea, and count to ten.',
       accent: 'rose',
       modules: [
-        {
-          id: 's1-m1',
-          title: 'Greetings',
-          subtitle: 'Hello, morning, night',
-          exercises: [
-            {
-              id: 's1-m1-e1',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'こんにちは (konnichiwa)',
-              options: [
-                'Good evening',
-                'Hello, or good afternoon',
-                'Good morning',
-                'Goodbye',
-              ],
-              answer: 1,
-            },
-            {
-              id: 's1-m1-e2',
-              type: 'multiple-choice',
-              prompt: 'How do you say this?',
-              question: 'Good morning',
-              options: [
-                'こんばんは (konbanwa)',
-                'おはよう (ohayō)',
-                'さようなら (sayōnara)',
-                'こんにちは (konnichiwa)',
-              ],
-              answer: 1,
-            },
-            {
-              id: 's1-m1-e3',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'こんにちは (konnichiwa)', right: 'hello' },
-                { left: 'おはよう (ohayō)', right: 'good morning' },
-                { left: 'こんばんは (konbanwa)', right: 'good evening' },
-                { left: 'さようなら (sayōnara)', right: 'goodbye' },
-              ],
-            },
-            {
-              id: 's1-m1-e4',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: '___ gozaimasu.',
-              answer: 'Ohayō',
+        defineModule('s1-m1', 'Greetings', 'Hello, morning, night', [
+          part('Words', [
+            choose(
+              'Choose the translation',
+              'こんにちは (konnichiwa)',
+              'Hello, or good afternoon',
+              ['Good evening', 'Good morning', 'Goodbye'],
+            ),
+            choose('How do you say this?', 'Good morning', 'おはよう (ohayō)', [
+              'こんばんは (konbanwa)',
+              'さようなら (sayōnara)',
+              'こんにちは (konnichiwa)',
+            ]),
+            match([
+              ['こんにちは (konnichiwa)', 'hello'],
+              ['おはよう (ohayō)', 'good morning'],
+              ['こんばんは (konbanwa)', 'good evening'],
+              ['さようなら (sayōnara)', 'goodbye'],
+            ]),
+            choose('Choose the translation', 'ありがとう (arigatō)', 'Thank you', [
+              'Excuse me',
+              "You're welcome",
+              'Please',
+            ]),
+            choose(
+              'Choose the translation',
+              'おやすみなさい (oyasuminasai)',
+              'Good night',
+              ['Good evening', 'Goodbye', 'Good morning'],
+              'Konbanwa greets someone in the evening; oyasuminasai is said on going to bed.',
+            ),
+          ]),
+          part('Sentences', [
+            fill('___ gozaimasu.', 'Ohayō', 'Good morning. (polite)', {
               alternates: ['Ohayou', 'Ohayo'],
-              translation: 'Good morning. (polite)',
               note: 'おはようございます — adding gozaimasu makes the greeting polite.',
-            },
-            {
-              id: 's1-m1-e5',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'ありがとう (arigatō)',
-              options: ['Excuse me', 'Thank you', "You're welcome", 'Please'],
-              answer: 1,
-            },
-          ],
-        },
-        {
-          id: 's1-m2',
-          title: 'Essentials',
-          subtitle: 'Yes, no, and asking nicely',
-          exercises: [
-            {
-              id: 's1-m2-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'はい (hai)', right: 'yes' },
-                { left: 'いいえ (iie)', right: 'no' },
-                { left: 'すみません (sumimasen)', right: 'excuse me' },
-                { left: 'おねがいします (onegaishimasu)', right: 'please' },
+            }),
+            fill('Arigatō ___.', 'gozaimasu', 'Thank you very much. (polite)'),
+            choose(
+              'Pick the correct sentence',
+              'Good evening, teacher.',
+              'Konbanwa, sensei.',
+              ['Konnichiwa, sensei.', 'Ohayō, sensei.', 'Sayōnara, sensei.'],
+            ),
+            fill('___, Tanaka-san.', 'Konnichiwa', 'Hello, Tanaka.', {
+              note: '-san is a polite title for anyone — Mr, Ms, or neither.',
+            }),
+            choose(
+              'Pick the correct sentence',
+              'Good morning, everyone.',
+              'Minasan, ohayō gozaimasu.',
+              [
+                'Minasan, konbanwa.',
+                'Minasan, sayōnara.',
+                'Watashi wa ohayō desu.',
               ],
-            },
-            {
-              id: 's1-m2-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'いいえ (iie)',
-              options: ['Yes', 'No', 'Maybe', 'Never'],
-              answer: 1,
-            },
-            {
-              id: 's1-m2-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: '___, wakarimashita.',
-              answer: 'Hai',
-              translation: 'Yes, I understand.',
-            },
-            {
-              id: 's1-m2-e4',
-              type: 'multiple-choice',
-              prompt: 'What does this mean?',
-              question: 'おげんきですか (o-genki desu ka)',
-              options: [
-                'What is your name?',
-                'How are you?',
-                'Where are you from?',
-                'How old are you?',
-              ],
-              answer: 1,
-            },
-            {
-              id: 's1-m2-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Mizu o ___.',
-              answer: 'kudasai',
-              translation: 'Water, please.',
+            ),
+          ]),
+        ]),
+        defineModule('s1-m2', 'Essentials', 'Yes, no, and asking nicely', [
+          part('Words', [
+            match([
+              ['はい (hai)', 'yes'],
+              ['いいえ (iie)', 'no'],
+              ['すみません (sumimasen)', 'excuse me'],
+              ['おねがいします (onegaishimasu)', 'please'],
+            ]),
+            choose('Choose the translation', 'いいえ (iie)', 'No', [
+              'Yes',
+              'Maybe',
+              'Never',
+            ]),
+            choose(
+              'What does this mean?',
+              'おげんきですか (o-genki desu ka)',
+              'How are you?',
+              ['What is your name?', 'Where are you from?', 'How old are you?'],
+            ),
+            match([
+              ['ありがとう (arigatō)', 'thank you'],
+              ['どういたしまして (dōitashimashite)', 'you’re welcome'],
+              ['ごめんなさい (gomen nasai)', 'sorry'],
+              ['わかりました (wakarimashita)', 'understood'],
+            ]),
+            choose('How do you say this?', 'Excuse me', 'すみません (sumimasen)', [
+              'ありがとう (arigatō)',
+              'いいえ (iie)',
+              'はい (hai)',
+            ]),
+          ]),
+          part('Sentences', [
+            fill('___, wakarimashita.', 'Hai', 'Yes, I understand.'),
+            fill('Mizu o ___.', 'kudasai', 'Water, please.', {
               note: 'ください — kudasai turns a request into "please give me".',
-            },
-          ],
-        },
-        {
-          id: 's1-m3',
-          title: 'People',
-          subtitle: 'I, you, and introductions',
-          exercises: [
-            {
-              id: 's1-m3-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'わたし (watashi)', right: 'I' },
-                { left: 'あなた (anata)', right: 'you' },
-                { left: 'ともだち (tomodachi)', right: 'friend' },
-                { left: 'せんせい (sensei)', right: 'teacher' },
+            }),
+            fill(
+              '— Arigatō. — ___.',
+              'Dōitashimashite',
+              '— Thank you. — You’re welcome.',
+              {
+                prompt: 'Complete the reply',
+                alternates: ['Douitashimashite'],
+              },
+            ),
+            choose(
+              'Pick the correct sentence',
+              'Excuse me, I don’t understand.',
+              'Sumimasen, wakarimasen.',
+              [
+                'Sumimasen, wakarimasu.',
+                'Arigatō, wakarimasen.',
+                'Hai, wakarimasen.',
               ],
-            },
-            {
-              id: 's1-m3-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'ひと (hito)',
-              options: ['Person', 'Place', 'Thing', 'Time'],
-              answer: 0,
-            },
-            {
-              id: 's1-m3-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Watashi ___ gakusei desu.',
-              answer: 'wa',
-              translation: 'I am a student.',
+            ),
+            fill('Hai, ___ desu.', 'genki', 'Yes, I am well.', {
+              note: 'Replying to o-genki desu ka, drop the polite o- when talking about yourself.',
+            }),
+          ]),
+        ]),
+        defineModule('s1-m3', 'People', 'I, you, and introductions', [
+          part('Words', [
+            match([
+              ['わたし (watashi)', 'I'],
+              ['あなた (anata)', 'you'],
+              ['ともだち (tomodachi)', 'friend'],
+              ['せんせい (sensei)', 'teacher'],
+            ]),
+            choose('Choose the translation', 'ひと (hito)', 'Person', [
+              'Place',
+              'Thing',
+              'Time',
+            ]),
+            match([
+              ['かれ (kare)', 'he'],
+              ['かのじょ (kanojo)', 'she'],
+              ['がくせい (gakusei)', 'student'],
+              ['なまえ (namae)', 'name'],
+            ]),
+            choose('Choose the translation', 'ともだち (tomodachi)', 'Friend', [
+              'Family',
+              'Teacher',
+              'Neighbour',
+            ]),
+            choose('How do you say this?', 'Teacher', 'せんせい (sensei)', [
+              'がくせい (gakusei)',
+              'ともだち (tomodachi)',
+              'ひと (hito)',
+            ]),
+          ]),
+          part('Sentences', [
+            fill('Watashi ___ gakusei desu.', 'wa', 'I am a student.', {
               note: 'は is written "ha" but pronounced "wa" when it marks the topic.',
-            },
-            {
-              id: 's1-m3-e4',
-              type: 'multiple-choice',
-              prompt: 'Pick the correct sentence',
-              question: 'She is a teacher.',
-              options: [
-                'Kanojo wa sensei desu.',
+            }),
+            choose(
+              'Pick the correct sentence',
+              'She is a teacher.',
+              'Kanojo wa sensei desu.',
+              [
                 'Kanojo wa gakusei desu.',
                 'Kare wa sensei desu.',
                 'Watashi wa sensei desu.',
               ],
-              answer: 0,
-            },
-            {
-              id: 's1-m3-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Hajimemashite, Tanaka ___.',
-              answer: 'desu',
-              translation: 'Nice to meet you, I am Tanaka.',
-            },
-          ],
-        },
-        {
-          id: 's1-m4',
-          title: 'Food & Drink',
-          subtitle: 'Water, tea, rice, fish',
-          exercises: [
-            {
-              id: 's1-m4-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'みず (mizu)', right: 'water' },
-                { left: 'おちゃ (ocha)', right: 'tea' },
-                { left: 'ごはん (gohan)', right: 'rice' },
-                { left: 'さかな (sakana)', right: 'fish' },
+            ),
+            fill(
+              'Hajimemashite, Tanaka ___.',
+              'desu',
+              'Nice to meet you, I am Tanaka.',
+            ),
+            fill('Watashi no ___ wa Yuki desu.', 'namae', 'My name is Yuki.'),
+            choose(
+              'Pick the correct sentence',
+              'He is my friend.',
+              'Kare wa watashi no tomodachi desu.',
+              [
+                'Kare wa watashi tomodachi desu.',
+                'Kanojo wa watashi no tomodachi desu.',
+                'Kare wa anata no tomodachi desu.',
               ],
-            },
-            {
-              id: 's1-m4-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'パン (pan)',
-              options: ['Rice', 'Bread', 'Noodles', 'Soup'],
-              answer: 1,
-            },
-            {
-              id: 's1-m4-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Ocha o ___.',
-              answer: 'nomimasu',
-              translation: 'I drink tea.',
-            },
-            {
-              id: 's1-m4-e4',
-              type: 'multiple-choice',
-              prompt: 'Pick the correct sentence',
-              question: 'I eat fish.',
-              options: [
-                'Sakana o tabemasu.',
+            ),
+          ]),
+        ]),
+        defineModule('s1-m4', 'Food & Drink', 'Water, tea, rice, fish', [
+          part('Words', [
+            match([
+              ['みず (mizu)', 'water'],
+              ['おちゃ (ocha)', 'tea'],
+              ['ごはん (gohan)', 'rice'],
+              ['さかな (sakana)', 'fish'],
+            ]),
+            choose('Choose the translation', 'パン (pan)', 'Bread', [
+              'Rice',
+              'Noodles',
+              'Soup',
+            ]),
+            match([
+              ['にく (niku)', 'meat'],
+              ['やさい (yasai)', 'vegetables'],
+              ['たまご (tamago)', 'egg'],
+              ['くだもの (kudamono)', 'fruit'],
+            ]),
+            choose('Choose the translation', 'おちゃ (ocha)', 'Tea', [
+              'Water',
+              'Coffee',
+              'Milk',
+            ]),
+            choose('How do you say this?', 'Water', 'みず (mizu)', [
+              'おちゃ (ocha)',
+              'ごはん (gohan)',
+              'さかな (sakana)',
+            ]),
+          ]),
+          part('Sentences', [
+            fill('Ocha o ___.', 'nomimasu', 'I drink tea.'),
+            choose(
+              'Pick the correct sentence',
+              'I eat fish.',
+              'Sakana o tabemasu.',
+              [
                 'Sakana o nomimasu.',
                 'Sakana ga tabemasu.',
                 'Sakana wa nomimasu.',
               ],
-              answer: 0,
-              note: 'を (o) marks the thing the verb acts on.',
-            },
-            {
-              id: 's1-m4-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Kore wa ___ desu.',
-              answer: 'gohan',
-              translation: 'This is rice.',
-            },
-          ],
-        },
-        {
-          id: 's1-m5',
-          title: 'Numbers',
-          subtitle: 'Count from one to ten',
-          exercises: [
-            {
-              id: 's1-m5-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'いち (ichi)', right: 'one' },
-                { left: 'に (ni)', right: 'two' },
-                { left: 'さん (san)', right: 'three' },
-                { left: 'じゅう (jū)', right: 'ten' },
-              ],
-            },
-            {
-              id: 's1-m5-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'ご (go)',
-              options: ['Four', 'Five', 'Six', 'Nine'],
-              answer: 1,
-            },
-            {
-              id: 's1-m5-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: '___ ji desu.',
-              answer: 'san',
-              translation: 'It is three o’clock.',
-            },
-            {
-              id: 's1-m5-e4',
-              type: 'multiple-choice',
-              prompt: 'How do you say this?',
-              question: 'Seven',
-              options: ['roku', 'nana', 'hachi', 'kyū'],
-              answer: 1,
-            },
-            {
-              id: 's1-m5-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Hachi, kyū, ___.',
-              answer: 'jū',
+              'を (o) marks the thing the verb acts on.',
+            ),
+            fill('Kore wa ___ desu.', 'gohan', 'This is rice.'),
+            fill(
+              'Asagohan ni tamago o ___.',
+              'tabemasu',
+              'I eat eggs for breakfast.',
+            ),
+            choose(
+              'Pick the correct sentence',
+              'I do not drink coffee.',
+              'Kōhī o nomimasen.',
+              ['Kōhī o nomimasu.', 'Kōhī o tabemasen.', 'Kōhī ga nomimasen.'],
+            ),
+          ]),
+        ]),
+        defineModule('s1-m5', 'Numbers', 'Count from one to ten', [
+          part('Words', [
+            match([
+              ['いち (ichi)', 'one'],
+              ['に (ni)', 'two'],
+              ['さん (san)', 'three'],
+              ['じゅう (jū)', 'ten'],
+            ]),
+            choose('Choose the translation', 'ご (go)', 'Five', [
+              'Four',
+              'Six',
+              'Nine',
+            ]),
+            choose('How do you say this?', 'Seven', 'nana', [
+              'roku',
+              'hachi',
+              'kyū',
+            ]),
+            match([
+              ['よん (yon)', 'four'],
+              ['ろく (roku)', 'six'],
+              ['はち (hachi)', 'eight'],
+              ['きゅう (kyū)', 'nine'],
+            ]),
+            choose('Choose the translation', 'なな (nana)', 'Seven', [
+              'Six',
+              'Eight',
+              'Nine',
+            ]),
+          ]),
+          part('Sentences', [
+            fill('___ ji desu.', 'san', 'It is three o’clock.'),
+            fill('Hachi, kyū, ___.', 'jū', 'Eight, nine, ten.', {
               alternates: ['juu'],
-              translation: 'Eight, nine, ten.',
-            },
-          ],
-        },
+            }),
+            fill('Ima, ___ ji desu.', 'roku', 'It is six o’clock now.'),
+            choose(
+              'How do you say this?',
+              'Two people',
+              'Futari',
+              ['Ni-nin', 'Hitori', 'Futatsu'],
+              'People have their own counting words: hitori, futari, then san-nin.',
+            ),
+            fill('Jū tasu ___ wa jūni desu.', 'ni', 'Ten plus two is twelve.'),
+          ]),
+        ]),
       ],
     },
     {
@@ -311,233 +315,234 @@ export const japanese: Course = {
       subtitle: 'Family, colours, places, and what you do each day.',
       accent: 'azure',
       modules: [
-        {
-          id: 's2-m1',
-          title: 'Family',
-          subtitle: 'Yours and everyone else’s',
-          exercises: [
-            {
-              id: 's2-m1-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'おかあさん (okāsan)', right: 'mother' },
-                { left: 'おとうさん (otōsan)', right: 'father' },
-                { left: 'あね (ane)', right: 'older sister' },
-                { left: 'おとうと (otōto)', right: 'younger brother' },
-              ],
-            },
-            {
-              id: 's2-m1-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'かぞく (kazoku)',
-              options: ['Friend', 'Family', 'House', 'Village'],
-              answer: 1,
-            },
-            {
-              id: 's2-m1-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: '___ wa sensei desu.',
-              answer: 'Chichi',
-              translation: 'My father is a teacher.',
+        defineModule('s2-m1', 'Family', 'Yours and everyone else’s', [
+          part('Words', [
+            match([
+              ['おかあさん (okāsan)', 'mother'],
+              ['おとうさん (otōsan)', 'father'],
+              ['あね (ane)', 'older sister'],
+              ['おとうと (otōto)', 'younger brother'],
+            ]),
+            choose('Choose the translation', 'かぞく (kazoku)', 'Family', [
+              'Friend',
+              'House',
+              'Village',
+            ]),
+            match([
+              ['あに (ani)', 'older brother'],
+              ['いもうと (imōto)', 'younger sister'],
+              ['ちち (chichi)', 'my father'],
+              ['はは (haha)', 'my mother'],
+            ]),
+            choose('Choose the translation', 'おかあさん (okāsan)', 'Mother', [
+              'Father',
+              'Grandmother',
+              'Aunt',
+            ]),
+            choose('How do you say this?', 'Family', 'かぞく (kazoku)', [
+              'ともだち (tomodachi)',
+              'うち (uchi)',
+              'ひと (hito)',
+            ]),
+          ]),
+          part('Sentences', [
+            fill('___ wa sensei desu.', 'Chichi', 'My father is a teacher.', {
               note: 'Chichi is how you speak of your own father; otōsan is for someone else’s.',
-            },
-            {
-              id: 's2-m1-e4',
-              type: 'multiple-choice',
-              prompt: 'Pick the correct sentence',
-              question: 'I have two older sisters.',
-              options: [
-                'Ane ga futari imasu.',
+            }),
+            choose(
+              'Pick the correct sentence',
+              'I have two older sisters.',
+              'Ane ga futari imasu.',
+              [
                 'Ane ga futatsu imasu.',
                 'Ane wa futari arimasu.',
                 'Imōto ga futari imasu.',
               ],
-              answer: 0,
-              note: 'います is used for people and animals; あります for things.',
-            },
-            {
-              id: 's2-m1-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Kazoku ___ daisuki desu.',
-              answer: 'ga',
-              translation: 'I love my family.',
-            },
-          ],
-        },
-        {
-          id: 's2-m2',
-          title: 'Colours & Things',
-          subtitle: 'Describe what you see',
-          exercises: [
-            {
-              id: 's2-m2-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'あか (aka)', right: 'red' },
-                { left: 'あお (ao)', right: 'blue' },
-                { left: 'しろ (shiro)', right: 'white' },
-                { left: 'くろ (kuro)', right: 'black' },
+              'います is used for people and animals; あります for things.',
+            ),
+            fill('Kazoku ___ daisuki desu.', 'ga', 'I love my family.'),
+            fill(
+              '___ wa ryōri ga jōzu desu.',
+              'Haha',
+              'My mother is good at cooking.',
+            ),
+            choose(
+              'Pick the correct sentence',
+              'My younger brother is a student.',
+              'Otōto wa gakusei desu.',
+              [
+                'Ani wa gakusei desu.',
+                'Otōto wa sensei desu.',
+                'Otōto ga gakusei imasu.',
               ],
-            },
-            {
-              id: 's2-m2-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'ほん (hon)',
-              options: ['Car', 'Book', 'Pen', 'Bag'],
-              answer: 1,
-            },
-            {
-              id: 's2-m2-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Kuruma wa ___ desu.',
-              answer: 'akai',
-              translation: 'The car is red.',
+            ),
+          ]),
+        ]),
+        defineModule('s2-m2', 'Colours & Things', 'Describe what you see', [
+          part('Words', [
+            match([
+              ['あか (aka)', 'red'],
+              ['あお (ao)', 'blue'],
+              ['しろ (shiro)', 'white'],
+              ['くろ (kuro)', 'black'],
+            ]),
+            choose('Choose the translation', 'ほん (hon)', 'Book', [
+              'Car',
+              'Pen',
+              'Bag',
+            ]),
+            choose('How do you say this?', 'The white book', 'shiroi hon', [
+              'hon shiroi',
+              'shiro hon',
+              'hon no shiroi',
+            ]),
+            match([
+              ['ほん (hon)', 'book'],
+              ['くるま (kuruma)', 'car'],
+              ['かばん (kaban)', 'bag'],
+              ['ペン (pen)', 'pen'],
+            ]),
+            choose('Choose the translation', 'くろ (kuro)', 'Black', [
+              'White',
+              'Blue',
+              'Red',
+            ]),
+          ]),
+          part('Sentences', [
+            fill('Kuruma wa ___ desu.', 'akai', 'The car is red.', {
               note: 'あかい — the -i form describes something directly.',
-            },
-            {
-              id: 's2-m2-e4',
-              type: 'multiple-choice',
-              prompt: 'How do you say this?',
-              question: 'The white book',
-              options: [
-                'shiroi hon',
-                'hon shiroi',
-                'shiro hon',
-                'hon no shiroi',
-              ],
-              answer: 0,
-            },
-            {
-              id: 's2-m2-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Kore wa watashi ___ hon desu.',
-              answer: 'no',
-              translation: 'This is my book.',
+            }),
+            fill('Kore wa watashi ___ hon desu.', 'no', 'This is my book.', {
               note: 'の (no) links two nouns, much like ’s in English.',
-            },
-          ],
-        },
-        {
-          id: 's2-m3',
-          title: 'Places',
-          subtitle: 'Home, school, station, shop',
-          exercises: [
-            {
-              id: 's2-m3-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'うち (uchi)', right: 'home' },
-                { left: 'がっこう (gakkō)', right: 'school' },
-                { left: 'えき (eki)', right: 'station' },
-                { left: 'みせ (mise)', right: 'shop' },
-              ],
-            },
-            {
-              id: 's2-m3-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'こうえん (kōen)',
-              options: ['Park', 'Hospital', 'Library', 'Bank'],
-              answer: 0,
-            },
-            {
-              id: 's2-m3-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Gakkō ___ ikimasu.',
-              answer: 'ni',
+            }),
+            fill('Kaban wa ___ desu.', 'kuroi', 'The bag is black.'),
+            choose('How do you say this?', 'The blue car', 'aoi kuruma', [
+              'kuruma aoi',
+              'ao kuruma',
+              'kuruma no aoi',
+            ]),
+            fill('Kore wa ___ desu ka.', 'pen', 'Is this a pen?'),
+          ]),
+        ]),
+        defineModule('s2-m3', 'Places', 'Home, school, station, shop', [
+          part('Words', [
+            match([
+              ['うち (uchi)', 'home'],
+              ['がっこう (gakkō)', 'school'],
+              ['えき (eki)', 'station'],
+              ['みせ (mise)', 'shop'],
+            ]),
+            choose('Choose the translation', 'こうえん (kōen)', 'Park', [
+              'Hospital',
+              'Library',
+              'Bank',
+            ]),
+            match([
+              ['としょかん (toshokan)', 'library'],
+              ['ぎんこう (ginkō)', 'bank'],
+              ['ゆうびんきょく (yūbinkyoku)', 'post office'],
+              ['レストラン (resutoran)', 'restaurant'],
+            ]),
+            choose('Choose the translation', 'がっこう (gakkō)', 'School', [
+              'Station',
+              'Office',
+              'Shop',
+            ]),
+            choose('How do you say this?', 'Station', 'えき (eki)', [
+              'みせ (mise)',
+              'うち (uchi)',
+              'こうえん (kōen)',
+            ]),
+          ]),
+          part('Sentences', [
+            fill('Gakkō ___ ikimasu.', 'ni', 'I go to school.', {
               alternates: ['e', 'he'],
-              translation: 'I go to school.',
               note: 'に and へ both mark where you are heading.',
-            },
-            {
-              id: 's2-m3-e4',
-              type: 'multiple-choice',
-              prompt: 'Pick the correct sentence',
-              question: 'The book is on the table.',
-              options: [
-                'Hon wa tēburu no ue ni arimasu.',
+            }),
+            choose(
+              'Pick the correct sentence',
+              'The book is on the table.',
+              'Hon wa tēburu no ue ni arimasu.',
+              [
                 'Hon wa tēburu no ue ni imasu.',
                 'Hon ga tēburu ue arimasu.',
                 'Tēburu wa hon no ue ni arimasu.',
               ],
-              answer: 0,
-            },
-            {
-              id: 's2-m3-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Eki wa doko ___ ka.',
-              answer: 'desu',
-              translation: 'Where is the station?',
-            },
-          ],
-        },
-        {
-          id: 's2-m4',
-          title: 'Daily Verbs',
-          subtitle: 'Eat, drink, go, watch',
-          exercises: [
-            {
-              id: 's2-m4-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'たべる (taberu)', right: 'to eat' },
-                { left: 'のむ (nomu)', right: 'to drink' },
-                { left: 'いく (iku)', right: 'to go' },
-                { left: 'みる (miru)', right: 'to watch' },
+            ),
+            fill('Eki wa doko ___ ka.', 'desu', 'Where is the station?'),
+            fill(
+              'Toshokan de hon o ___.',
+              'yomimasu',
+              'I read books at the library.',
+              { note: 'で (de) marks where an action happens.' },
+            ),
+            choose(
+              'Pick the correct sentence',
+              'I go home.',
+              'Uchi ni kaerimasu.',
+              ['Uchi ni ikimasen.', 'Uchi de kaerimasu.', 'Uchi o kaerimasu.'],
+              'Going home uses kaerimasu, “return”, rather than ikimasu.',
+            ),
+          ]),
+        ]),
+        defineModule('s2-m4', 'Daily Verbs', 'Eat, drink, go, watch', [
+          part('Words', [
+            match([
+              ['たべる (taberu)', 'to eat'],
+              ['のむ (nomu)', 'to drink'],
+              ['いく (iku)', 'to go'],
+              ['みる (miru)', 'to watch'],
+            ]),
+            choose('Choose the translation', 'よむ (yomu)', 'To read', [
+              'To write',
+              'To listen',
+              'To speak',
+            ]),
+            match([
+              ['おきる (okiru)', 'to get up'],
+              ['ねる (neru)', 'to sleep'],
+              ['かく (kaku)', 'to write'],
+              ['はなす (hanasu)', 'to speak'],
+            ]),
+            choose('Choose the translation', 'のむ (nomu)', 'To drink', [
+              'To eat',
+              'To go',
+              'To see',
+            ]),
+            choose('How do you say this?', 'To go', 'いく (iku)', [
+              'くる (kuru)',
+              'みる (miru)',
+              'のむ (nomu)',
+            ]),
+          ]),
+          part('Sentences', [
+            fill('Mainichi hon o ___.', 'yomimasu', 'I read a book every day.'),
+            choose(
+              'How do you say this?',
+              'I do not go.',
+              'Ikimasen.',
+              ['Ikimasu.', 'Ikimashita.', 'Ikimasen deshita.'],
+              '-masen is the polite negative ending.',
+            ),
+            fill('Terebi o ___.', 'mimasu', 'I watch television.'),
+            fill(
+              'Maiasa roku-ji ni ___.',
+              'okimasu',
+              'I get up at six every morning.',
+            ),
+            choose(
+              'Pick the correct sentence',
+              'I went to school yesterday.',
+              'Kinō gakkō ni ikimashita.',
+              [
+                'Kinō gakkō ni ikimasu.',
+                'Ashita gakkō ni ikimashita.',
+                'Kinō gakkō de ikimashita.',
               ],
-            },
-            {
-              id: 's2-m4-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'よむ (yomu)',
-              options: ['To write', 'To read', 'To listen', 'To speak'],
-              answer: 1,
-            },
-            {
-              id: 's2-m4-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Mainichi hon o ___.',
-              answer: 'yomimasu',
-              translation: 'I read a book every day.',
-            },
-            {
-              id: 's2-m4-e4',
-              type: 'multiple-choice',
-              prompt: 'How do you say this?',
-              question: 'I do not go.',
-              options: [
-                'Ikimasen.',
-                'Ikimasu.',
-                'Ikimashita.',
-                'Ikimasen deshita.',
-              ],
-              answer: 0,
-              note: '-masen is the polite negative ending.',
-            },
-            {
-              id: 's2-m4-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Terebi o ___.',
-              answer: 'mimasu',
-              translation: 'I watch television.',
-            },
-          ],
-        },
+              '-mashita is the polite past ending.',
+            ),
+          ]),
+        ]),
       ],
     },
     {
@@ -546,240 +551,254 @@ export const japanese: Course = {
       subtitle: 'Trains, questions, restaurants, and getting by.',
       accent: 'violet',
       modules: [
-        {
-          id: 's3-m1',
-          title: 'Around Town',
-          subtitle: 'Trains, buses, and landmarks',
-          exercises: [
-            {
-              id: 's3-m1-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'でんしゃ (densha)', right: 'train' },
-                { left: 'バス (basu)', right: 'bus' },
-                { left: 'びょういん (byōin)', right: 'hospital' },
-                { left: 'こうえん (kōen)', right: 'park' },
-              ],
-            },
-            {
-              id: 's3-m1-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'くうこう (kūkō)',
-              options: ['Airport', 'Harbour', 'Border', 'Platform'],
-              answer: 0,
-            },
-            {
-              id: 's3-m1-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Densha ___ ikimasu.',
-              answer: 'de',
-              translation: 'I go by train.',
+        defineModule('s3-m1', 'Around Town', 'Trains, buses, and landmarks', [
+          part('Words', [
+            match([
+              ['でんしゃ (densha)', 'train'],
+              ['バス (basu)', 'bus'],
+              ['びょういん (byōin)', 'hospital'],
+              ['こうえん (kōen)', 'park'],
+            ]),
+            choose('Choose the translation', 'くうこう (kūkō)', 'Airport', [
+              'Harbour',
+              'Border',
+              'Platform',
+            ]),
+            match([
+              ['みち (michi)', 'road'],
+              ['かど (kado)', 'corner'],
+              ['ちかてつ (chikatetsu)', 'subway'],
+              ['タクシー (takushī)', 'taxi'],
+            ]),
+            choose('Choose the translation', 'えき (eki)', 'Station', [
+              'Airport',
+              'Bus stop',
+              'Port',
+            ]),
+            choose('How do you say this?', 'Bus', 'バス (basu)', [
+              'タクシー (takushī)',
+              'でんしゃ (densha)',
+              'くるま (kuruma)',
+            ]),
+          ]),
+          part('Sentences', [
+            fill('Densha ___ ikimasu.', 'de', 'I go by train.', {
               note: 'で (de) marks the means — by train, by bus, by car.',
-            },
-            {
-              id: 's3-m1-e4',
-              type: 'multiple-choice',
-              prompt: 'How do you ask this?',
-              question: 'Where is the bus stop?',
-              options: [
-                'Basu-tei wa doko desu ka.',
+            }),
+            choose(
+              'How do you ask this?',
+              'Where is the bus stop?',
+              'Basu-tei wa doko desu ka.',
+              [
                 'Basu-tei wa nan desu ka.',
                 'Basu-tei wa itsu desu ka.',
                 'Basu-tei o doko desu ka.',
               ],
-              answer: 0,
-            },
-            {
-              id: 's3-m1-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Kōen wa eki no ___ desu.',
-              answer: 'chikaku',
-              translation: 'The park is near the station.',
-            },
-          ],
-        },
-        {
-          id: 's3-m2',
-          title: 'Asking',
-          subtitle: 'Where, what, who, how much',
-          exercises: [
-            {
-              id: 's3-m2-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'どこ (doko)', right: 'where' },
-                { left: 'なに (nani)', right: 'what' },
-                { left: 'いくら (ikura)', right: 'how much' },
-                { left: 'だれ (dare)', right: 'who' },
+            ),
+            fill(
+              'Kōen wa eki no ___ desu.',
+              'chikaku',
+              'The park is near the station.',
+            ),
+            fill(
+              'Byōin wa eki no ___ ni arimasu.',
+              'mae',
+              'The hospital is in front of the station.',
+            ),
+            choose(
+              'Pick the correct sentence',
+              'The subway is fast.',
+              'Chikatetsu wa hayai desu.',
+              [
+                'Chikatetsu wa osoi desu.',
+                'Chikatetsu ga hayai imasu.',
+                'Chikatetsu wa hayai arimasu.',
               ],
-            },
-            {
-              id: 's3-m2-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'いつ (itsu)',
-              options: ['When', 'Why', 'How', 'Which'],
-              answer: 0,
-            },
-            {
-              id: 's3-m2-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Kore wa ___ desu ka.',
-              answer: 'nan',
+            ),
+          ]),
+        ]),
+        defineModule('s3-m2', 'Asking', 'Where, what, who, how much', [
+          part('Words', [
+            match([
+              ['どこ (doko)', 'where'],
+              ['なに (nani)', 'what'],
+              ['いくら (ikura)', 'how much'],
+              ['だれ (dare)', 'who'],
+            ]),
+            choose('Choose the translation', 'いつ (itsu)', 'When', [
+              'Why',
+              'How',
+              'Which',
+            ]),
+            match([
+              ['いつ (itsu)', 'when'],
+              ['なぜ (naze)', 'why'],
+              ['どれ (dore)', 'which one'],
+              ['どう (dō)', 'how'],
+            ]),
+            choose('Choose the translation', 'だれ (dare)', 'Who', [
+              'What',
+              'Where',
+              'When',
+            ]),
+            choose(
+              'How do you say this?',
+              'How much',
+              'いくら (ikura)',
+              ['いくつ (ikutsu)', 'いつ (itsu)', 'どこ (doko)'],
+              'Ikutsu asks “how many”; ikura asks “how much money”.',
+            ),
+          ]),
+          part('Sentences', [
+            fill('Kore wa ___ desu ka.', 'nan', 'What is this?', {
               alternates: ['nani'],
-              translation: 'What is this?',
               note: 'なに shortens to なん before desu.',
-            },
-            {
-              id: 's3-m2-e4',
-              type: 'multiple-choice',
-              prompt: 'How do you ask this?',
-              question: 'How much is it?',
-              options: [
-                'Ikura desu ka.',
-                'Ikutsu desu ka.',
-                'Itsu desu ka.',
-                'Doko desu ka.',
+            }),
+            choose(
+              'How do you ask this?',
+              'How much is it?',
+              'Ikura desu ka.',
+              ['Ikutsu desu ka.', 'Itsu desu ka.', 'Doko desu ka.'],
+            ),
+            fill('Toire wa ___ desu ka.', 'doko', 'Where is the toilet?'),
+            fill('Ano hito wa ___ desu ka.', 'dare', 'Who is that person?'),
+            choose(
+              'How do you ask this?',
+              'When is the test?',
+              'Shiken wa itsu desu ka.',
+              [
+                'Shiken wa doko desu ka.',
+                'Shiken wa nan desu ka.',
+                'Shiken wa itsu deshita ka.',
               ],
-              answer: 0,
-            },
-            {
-              id: 's3-m2-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Toire wa ___ desu ka.',
-              answer: 'doko',
-              translation: 'Where is the toilet?',
-            },
-          ],
-        },
-        {
-          id: 's3-m3',
-          title: 'At the Restaurant',
-          subtitle: 'Order, praise, and pay',
-          exercises: [
-            {
-              id: 's3-m3-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'メニュー (menyū)', right: 'menu' },
-                { left: 'おいしい (oishii)', right: 'delicious' },
-                { left: 'おかいけい (o-kaikei)', right: 'the bill' },
-                { left: 'みず (mizu)', right: 'water' },
-              ],
-            },
-            {
-              id: 's3-m3-e2',
-              type: 'multiple-choice',
-              prompt: 'When is this said?',
-              question: 'いただきます (itadakimasu)',
-              options: [
-                'Just before eating',
-                'Just after eating',
-                'When ordering',
-                'When paying',
-              ],
-              answer: 0,
-            },
-            {
-              id: 's3-m3-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Kore o ___.',
-              answer: 'kudasai',
-              translation: 'This one, please.',
-            },
-            {
-              id: 's3-m3-e4',
-              type: 'multiple-choice',
-              prompt: 'How do you say this?',
-              question: 'It is delicious.',
-              options: [
-                'Oishii desu.',
-                'Oishii deshita ka.',
-                'Oishikunai desu.',
-                'Oishii ja arimasen.',
-              ],
-              answer: 0,
-            },
-            {
-              id: 's3-m3-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: '___, onegaishimasu.',
-              answer: 'Okaikei',
+            ),
+          ]),
+        ]),
+        defineModule('s3-m3', 'At the Restaurant', 'Order, praise, and pay', [
+          part('Words', [
+            match([
+              ['メニュー (menyū)', 'menu'],
+              ['おいしい (oishii)', 'delicious'],
+              ['おかいけい (o-kaikei)', 'the bill'],
+              ['みず (mizu)', 'water'],
+            ]),
+            choose(
+              'When is this said?',
+              'いただきます (itadakimasu)',
+              'Just before eating',
+              ['Just after eating', 'When ordering', 'When paying'],
+            ),
+            match([
+              ['はし (hashi)', 'chopsticks'],
+              ['スプーン (supūn)', 'spoon'],
+              ['おさら (osara)', 'plate'],
+              ['コップ (koppu)', 'glass'],
+            ]),
+            choose('Choose the translation', 'おいしい (oishii)', 'Delicious', [
+              'Expensive',
+              'Hot',
+              'Sweet',
+            ]),
+            choose(
+              'What does this mean?',
+              'ごちそうさまでした (gochisōsama deshita)',
+              'Thank you for the meal',
+              ['Let’s eat', 'The bill, please', 'Welcome'],
+              'Said after eating; itadakimasu comes before.',
+            ),
+          ]),
+          part('Sentences', [
+            fill('Kore o ___.', 'kudasai', 'This one, please.'),
+            choose('How do you say this?', 'It is delicious.', 'Oishii desu.', [
+              'Oishii deshita ka.',
+              'Oishikunai desu.',
+              'Oishii ja arimasen.',
+            ]),
+            fill('___, onegaishimasu.', 'Okaikei', 'The bill, please.', {
               alternates: ['O-kaikei', 'Kaikei'],
-              translation: 'The bill, please.',
-            },
-          ],
-        },
-        {
-          id: 's3-m4',
-          title: 'Getting By',
-          subtitle: 'When you only half understand',
-          exercises: [
-            {
-              id: 's3-m4-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'わかりません (wakarimasen)', right: 'I don’t understand' },
-                { left: 'だいじょうぶ (daijōbu)', right: 'it’s fine' },
-                { left: 'ちょっと (chotto)', right: 'a little' },
-                { left: 'またね (mata ne)', right: 'see you' },
+            }),
+            fill('Kōhī o ___ kudasai.', 'futatsu', 'Two coffees, please.', {
+              note: 'Futatsu counts things: hitotsu, futatsu, mittsu.',
+            }),
+            choose(
+              'How do you ask this?',
+              'Do you have an English menu?',
+              'Eigo no menyū wa arimasu ka.',
+              [
+                'Eigo no menyū wa imasu ka.',
+                'Eigo no menyū wa doko desu ka.',
+                'Nihongo no menyū wa arimasu ka.',
               ],
-            },
-            {
-              id: 's3-m4-e2',
-              type: 'multiple-choice',
-              prompt: 'What does this mean?',
-              question: 'ゆっくり おねがいします (yukkuri onegaishimasu)',
-              options: [
-                'Slowly, please',
-                'Louder, please',
-                'Again, please',
-                'Wait, please',
+            ),
+          ]),
+        ]),
+        defineModule('s3-m4', 'Getting By', 'When you only half understand', [
+          part('Words', [
+            match([
+              ['わかりません (wakarimasen)', 'I don’t understand'],
+              ['だいじょうぶ (daijōbu)', 'it’s fine'],
+              ['ちょっと (chotto)', 'a little'],
+              ['またね (mata ne)', 'see you'],
+            ]),
+            choose(
+              'What does this mean?',
+              'ゆっくり おねがいします (yukkuri onegaishimasu)',
+              'Slowly, please',
+              ['Louder, please', 'Again, please', 'Wait, please'],
+            ),
+            match([
+              ['もういちど (mō ichido)', 'once more'],
+              ['ゆっくり (yukkuri)', 'slowly'],
+              ['えいご (eigo)', 'English'],
+              ['にほんご (nihongo)', 'Japanese'],
+            ]),
+            choose('Choose the translation', 'だいじょうぶ (daijōbu)', 'It’s fine', [
+              'I don’t know',
+              'Be careful',
+              'Sorry',
+            ]),
+            choose(
+              'How do you say this?',
+              'I don’t understand',
+              'わかりません (wakarimasen)',
+              [
+                'わかりました (wakarimashita)',
+                'すみません (sumimasen)',
+                'しりません (shirimasen)',
               ],
-              answer: 0,
-            },
-            {
-              id: 's3-m4-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Nihongo ga ___ wakarimasu.',
-              answer: 'sukoshi',
-              translation: 'I understand a little Japanese.',
-            },
-            {
-              id: 's3-m4-e4',
-              type: 'multiple-choice',
-              prompt: 'How do you say this?',
-              question: 'I do not speak Japanese.',
-              options: [
-                'Nihongo o hanashimasen.',
+              'Shirimasen means “I don’t know” — about facts, not understanding.',
+            ),
+          ]),
+          part('Sentences', [
+            fill(
+              'Nihongo ga ___ wakarimasu.',
+              'sukoshi',
+              'I understand a little Japanese.',
+            ),
+            choose(
+              'How do you say this?',
+              'I do not speak Japanese.',
+              'Nihongo o hanashimasen.',
+              [
                 'Nihongo o hanashimasu.',
                 'Nihongo ga suki desu.',
                 'Nihongo o hanashimashita.',
               ],
-              answer: 0,
-            },
-            {
-              id: 's3-m4-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Mata ___.',
-              answer: 'ne',
-              translation: 'See you.',
-            },
-          ],
-        },
+            ),
+            fill('Mata ___.', 'ne', 'See you.'),
+            fill('Mō ichido ___.', 'onegaishimasu', 'Once more, please.'),
+            choose(
+              'How do you ask this?',
+              'Do you speak English?',
+              'Eigo o hanashimasu ka.',
+              [
+                'Eigo o hanashimasen.',
+                'Eigo ga wakarimasu.',
+                'Nihongo o hanashimasu ka.',
+              ],
+            ),
+          ]),
+        ]),
       ],
     },
   ],

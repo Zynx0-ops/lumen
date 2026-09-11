@@ -16,4 +16,10 @@ export interface ExerciseProps<T extends Exercise = Exercise> {
   verdict: Verdict | null
   /** For exercises that finish on their own, like matching. */
   onAutoSubmit: (draft: Draft) => void
+  /**
+   * Varies per showing of the exercise. Shuffles key off it, so a retry
+   * lays options out differently and can't be answered from memory of where
+   * the right one sat.
+   */
+  seed: string
 }
