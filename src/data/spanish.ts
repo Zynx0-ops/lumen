@@ -1,13 +1,12 @@
+import { choose, defineModule, fill, match, part } from './build'
 import type { Course } from '../types'
 
 /**
  * A short Spanish course for English speakers.
  *
- * Conventions used below:
- *  - `fill-blank` sentences mark the gap with `___`.
- *  - Answer checking ignores case, accents and surrounding punctuation, so
- *    "adios" is accepted for "adiós". Use `alternates` for genuinely different
- *    words that are also correct.
+ * Answer checking ignores case, accents and surrounding punctuation, so
+ * "adios" is accepted for "adiós". Use `alternates` for genuinely different
+ * words that are also correct.
  */
 export const spanish: Course = {
   id: 'es-en',
@@ -20,283 +19,277 @@ export const spanish: Course = {
       subtitle: 'Greet people, count, and order breakfast.',
       accent: 'mint',
       modules: [
-        {
-          id: 's1-m1',
-          title: 'Greetings',
-          subtitle: 'Say hello and goodbye',
-          exercises: [
-            {
-              id: 's1-m1-e1',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'Hola',
-              options: ['Goodbye', 'Hello', 'Please', 'Thank you'],
-              answer: 1,
-            },
-            {
-              id: 's1-m1-e2',
-              type: 'multiple-choice',
-              prompt: 'How do you say this?',
-              question: 'Good morning',
-              options: [
-                'Buenas noches',
-                'Buenos días',
-                'Buenas tardes',
-                'Hasta luego',
+        defineModule('s1-m1', 'Greetings', 'Say hello and goodbye', [
+          part('Words', [
+            choose('Choose the translation', 'Hola', 'Hello', [
+              'Goodbye',
+              'Please',
+              'Thank you',
+            ]),
+            choose(
+              'How do you say this?',
+              'Good morning',
+              'Buenos días',
+              ['Buenas noches', 'Buenas tardes', 'Hasta luego'],
+              'Días is masculine, so the greeting uses buenos rather than buenas.',
+            ),
+            match([
+              ['hola', 'hello'],
+              ['adiós', 'goodbye'],
+              ['gracias', 'thank you'],
+              ['por favor', 'please'],
+            ]),
+            choose('How do you say this?', 'See you later', 'Hasta luego', [
+              'Mucho gusto',
+              'De nada',
+              'Buenas noches',
+            ]),
+            choose('Choose the translation', 'Adiós', 'Goodbye', [
+              'Hello',
+              'Please',
+              'Good night',
+            ]),
+          ]),
+          part('Sentences', [
+            fill('___, me llamo Ana.', 'Hola', 'Hello, my name is Ana.'),
+            fill('Buenos ___, señora.', 'días', 'Good morning, madam.'),
+            choose(
+              'Pick the correct sentence',
+              'Hello, my name is Pablo.',
+              'Hola, me llamo Pablo.',
+              [
+                'Adiós, me llamo Pablo.',
+                'Hola, se llama Pablo.',
+                'Hola, te llamas Pablo.',
               ],
-              answer: 1,
-              note: 'Días is masculine, so the greeting uses buenos rather than buenas.',
-            },
-            {
-              id: 's1-m1-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: '___, me llamo Ana.',
-              answer: 'Hola',
-              translation: 'Hello, my name is Ana.',
-            },
-            {
-              id: 's1-m1-e4',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'hola', right: 'hello' },
-                { left: 'adiós', right: 'goodbye' },
-                { left: 'gracias', right: 'thank you' },
-                { left: 'por favor', right: 'please' },
+            ),
+            fill('Hasta ___, Marta.', 'luego', 'See you later, Marta.'),
+            choose(
+              'What does this mean?',
+              '¿Cómo te llamas?',
+              'What is your name?',
+              ['How are you?', 'Where are you from?', 'How old are you?'],
+            ),
+          ]),
+        ]),
+        defineModule('s1-m2', 'Essentials', 'Yes, no, and being polite', [
+          part('Words', [
+            choose('Choose the translation', 'Sí', 'Yes', [
+              'No',
+              'Maybe',
+              'Never',
+            ]),
+            match([
+              ['sí', 'yes'],
+              ['no', 'no'],
+              ['tal vez', 'maybe'],
+              ['claro', 'of course'],
+            ]),
+            choose('What does this mean?', '¿Cómo estás?', 'How are you?', [
+              'What is your name?',
+              'Where are you from?',
+              'How old are you?',
+            ]),
+            match([
+              ['por favor', 'please'],
+              ['de nada', 'you’re welcome'],
+              ['perdón', 'sorry'],
+              ['bien', 'well'],
+            ]),
+            choose('How do you say this?', 'Of course', 'Claro', [
+              'Nunca',
+              'Tal vez',
+              'Nada',
+            ]),
+          ]),
+          part('Sentences', [
+            fill(
+              '— Gracias. — De ___.',
+              'nada',
+              "— Thank you. — You're welcome.",
+              { prompt: 'Complete the reply' },
+            ),
+            fill('Muy bien, ___.', 'gracias', 'Very well, thank you.'),
+            fill('Un café, por ___.', 'favor', 'A coffee, please.'),
+            choose(
+              'Pick the correct sentence',
+              'Sorry, I don’t understand.',
+              'Perdón, no entiendo.',
+              [
+                'Perdón, no entiendes.',
+                'Gracias, no entiendo.',
+                'Perdón, sí entiendo.',
               ],
-            },
-            {
-              id: 's1-m1-e5',
-              type: 'multiple-choice',
-              prompt: 'How do you say this?',
-              question: 'See you later',
-              options: [
-                'Hasta luego',
-                'Mucho gusto',
-                'De nada',
-                'Buenas noches',
-              ],
-              answer: 0,
-            },
-          ],
-        },
-        {
-          id: 's1-m2',
-          title: 'Essentials',
-          subtitle: 'Yes, no, and being polite',
-          exercises: [
-            {
-              id: 's1-m2-e1',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'Sí',
-              options: ['No', 'Yes', 'Maybe', 'Never'],
-              answer: 1,
-            },
-            {
-              id: 's1-m2-e2',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'sí', right: 'yes' },
-                { left: 'no', right: 'no' },
-                { left: 'tal vez', right: 'maybe' },
-                { left: 'claro', right: 'of course' },
-              ],
-            },
-            {
-              id: 's1-m2-e3',
-              type: 'fill-blank',
-              prompt: 'Complete the reply',
-              sentence: '— Gracias. — De ___.',
-              answer: 'nada',
-              translation: "— Thank you. — You're welcome.",
-            },
-            {
-              id: 's1-m2-e4',
-              type: 'multiple-choice',
-              prompt: 'What does this mean?',
-              question: '¿Cómo estás?',
-              options: [
-                'What is your name?',
-                'How are you?',
-                'Where are you from?',
-                'How old are you?',
-              ],
-              answer: 1,
-            },
-            {
-              id: 's1-m2-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Muy bien, ___.',
-              answer: 'gracias',
-              translation: 'Very well, thank you.',
-            },
-          ],
-        },
-        {
-          id: 's1-m3',
-          title: 'People',
-          subtitle: 'Talk about who is who',
-          exercises: [
-            {
-              id: 's1-m3-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'yo', right: 'I' },
-                { left: 'tú', right: 'you' },
-                { left: 'él', right: 'he' },
-                { left: 'ella', right: 'she' },
-              ],
-            },
-            {
-              id: 's1-m3-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'La mujer',
-              options: ['The man', 'The woman', 'The girl', 'The boy'],
-              answer: 1,
-            },
-            {
-              id: 's1-m3-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'El ___ es mi amigo.',
-              answer: 'hombre',
-              translation: 'The man is my friend.',
-            },
-            {
-              id: 's1-m3-e4',
-              type: 'multiple-choice',
-              prompt: 'Pick the correct sentence',
-              question: 'She is a student.',
-              options: [
-                'Él es estudiante.',
-                'Ella es estudiante.',
-                'Ella es maestra.',
-                'Yo soy estudiante.',
-              ],
-              answer: 1,
-            },
-            {
-              id: 's1-m3-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Nosotros ___ amigos.',
-              answer: 'somos',
-              translation: 'We are friends.',
+            ),
+            fill(
+              '— ¿Cómo estás? — Muy ___.',
+              'bien',
+              '— How are you? — Very well.',
+              { prompt: 'Complete the reply' },
+            ),
+          ]),
+        ]),
+        defineModule('s1-m3', 'People', 'Talk about who is who', [
+          part('Words', [
+            match([
+              ['yo', 'I'],
+              ['tú', 'you'],
+              ['él', 'he'],
+              ['ella', 'she'],
+            ]),
+            choose('Choose the translation', 'La mujer', 'The woman', [
+              'The man',
+              'The girl',
+              'The boy',
+            ]),
+            match([
+              ['el hombre', 'the man'],
+              ['la mujer', 'the woman'],
+              ['el niño', 'the boy'],
+              ['la niña', 'the girl'],
+            ]),
+            choose('Choose the translation', 'El amigo', 'The friend', [
+              'The brother',
+              'The teacher',
+              'The neighbour',
+            ]),
+            choose('How do you say this?', 'We', 'Nosotros', [
+              'Ellos',
+              'Vosotros',
+              'Yo',
+            ]),
+          ]),
+          part('Sentences', [
+            fill('El ___ es mi amigo.', 'hombre', 'The man is my friend.'),
+            choose(
+              'Pick the correct sentence',
+              'She is a student.',
+              'Ella es estudiante.',
+              ['Él es estudiante.', 'Ella es maestra.', 'Yo soy estudiante.'],
+            ),
+            fill('Nosotros ___ amigos.', 'somos', 'We are friends.', {
               note: 'Somos is the nosotros form of ser, "to be".',
-            },
-          ],
-        },
-        {
-          id: 's1-m4',
-          title: 'Food & Drink',
-          subtitle: 'Order something to eat',
-          exercises: [
-            {
-              id: 's1-m4-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'el pan', right: 'bread' },
-                { left: 'la leche', right: 'milk' },
-                { left: 'el agua', right: 'water' },
-                { left: 'la manzana', right: 'apple' },
+            }),
+            fill('Yo ___ Lucía.', 'soy', 'I am Lucía.'),
+            choose(
+              'Pick the correct sentence',
+              'They are children.',
+              'Ellos son niños.',
+              [
+                'Ellos es niños.',
+                'Nosotros somos niños.',
+                'Ellos son hombres.',
               ],
-            },
-            {
-              id: 's1-m4-e2',
-              type: 'multiple-choice',
-              prompt: 'How do you say this?',
-              question: 'The coffee',
-              options: ['El té', 'El jugo', 'El café', 'La sopa'],
-              answer: 2,
-            },
-            {
-              id: 's1-m4-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Yo ___ una manzana.',
-              answer: 'como',
-              translation: 'I eat an apple.',
-            },
-            {
-              id: 's1-m4-e4',
-              type: 'multiple-choice',
-              prompt: 'What does this mean?',
-              question: '¿Qué bebes?',
-              options: [
-                'What do you eat?',
-                'What do you drink?',
-                'What do you want?',
-                'What do you have?',
+            ),
+          ]),
+        ]),
+        defineModule('s1-m4', 'Food & Drink', 'Order something to eat', [
+          part('Words', [
+            match([
+              ['el pan', 'bread'],
+              ['la leche', 'milk'],
+              ['el agua', 'water'],
+              ['la manzana', 'apple'],
+            ]),
+            choose('How do you say this?', 'The coffee', 'El café', [
+              'El té',
+              'El jugo',
+              'La sopa',
+            ]),
+            match([
+              ['el café', 'coffee'],
+              ['el té', 'tea'],
+              ['el queso', 'cheese'],
+              ['el huevo', 'egg'],
+            ]),
+            choose('Choose the translation', 'La naranja', 'The orange', [
+              'The apple',
+              'The lemon',
+              'The grape',
+            ]),
+            choose('How do you say this?', 'The bread', 'El pan', [
+              'La leche',
+              'El queso',
+              'La sopa',
+            ]),
+          ]),
+          part('Sentences', [
+            fill('Yo ___ una manzana.', 'como', 'I eat an apple.'),
+            choose(
+              'What does this mean?',
+              '¿Qué bebes?',
+              'What do you drink?',
+              ['What do you eat?', 'What do you want?', 'What do you have?'],
+            ),
+            fill('Quiero un vaso de ___.', 'agua', 'I want a glass of water.'),
+            fill('Ella ___ leche.', 'bebe', 'She drinks milk.'),
+            choose(
+              'Pick the correct sentence',
+              'I want bread and cheese.',
+              'Quiero pan y queso.',
+              [
+                'Quiere pan y queso.',
+                'Quiero pan o queso.',
+                'Quiero pan con leche.',
               ],
-              answer: 1,
-            },
-            {
-              id: 's1-m4-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Quiero un vaso de ___.',
-              answer: 'agua',
-              translation: 'I want a glass of water.',
-            },
-          ],
-        },
-        {
-          id: 's1-m5',
-          title: 'Numbers',
-          subtitle: 'Count from one to ten',
-          exercises: [
-            {
-              id: 's1-m5-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'uno', right: 'one' },
-                { left: 'tres', right: 'three' },
-                { left: 'cinco', right: 'five' },
-                { left: 'ocho', right: 'eight' },
+            ),
+          ]),
+        ]),
+        defineModule('s1-m5', 'Numbers', 'Count from one to ten', [
+          part('Words', [
+            match([
+              ['uno', 'one'],
+              ['tres', 'three'],
+              ['cinco', 'five'],
+              ['ocho', 'eight'],
+            ]),
+            choose('Choose the translation', 'Diez', 'Ten', [
+              'Seven',
+              'Nine',
+              'Twelve',
+            ]),
+            choose('How do you say this?', 'Seven', 'Siete', [
+              'Seis',
+              'Nueve',
+              'Cuatro',
+            ]),
+            match([
+              ['dos', 'two'],
+              ['cuatro', 'four'],
+              ['seis', 'six'],
+              ['nueve', 'nine'],
+            ]),
+            choose('Choose the translation', 'Ocho', 'Eight', [
+              'Six',
+              'Three',
+              'Eleven',
+            ]),
+          ]),
+          part('Sentences', [
+            fill('Tengo ___ hermanos.', 'dos', 'I have two brothers.'),
+            fill(
+              'Son las ___ de la tarde.',
+              'cuatro',
+              'It is four in the afternoon.',
+            ),
+            fill('Tengo ___ años.', 'diez', 'I am ten years old.', {
+              note: 'Spanish gives your age with tener — literally “I have ten years”.',
+            }),
+            choose(
+              'How do you say this?',
+              'I have three cats.',
+              'Tengo tres gatos.',
+              [
+                'Tengo trece gatos.',
+                'Tienes tres gatos.',
+                'Tengo tres perros.',
               ],
-            },
-            {
-              id: 's1-m5-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'Diez',
-              options: ['Seven', 'Nine', 'Ten', 'Twelve'],
-              answer: 2,
-            },
-            {
-              id: 's1-m5-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Tengo ___ hermanos.',
-              answer: 'dos',
-              translation: 'I have two brothers.',
-            },
-            {
-              id: 's1-m5-e4',
-              type: 'multiple-choice',
-              prompt: 'How do you say this?',
-              question: 'Seven',
-              options: ['Seis', 'Siete', 'Nueve', 'Cuatro'],
-              answer: 1,
-            },
-            {
-              id: 's1-m5-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Son las ___ de la tarde.',
-              answer: 'cuatro',
-              translation: 'It is four in the afternoon.',
-            },
-          ],
-        },
+            ),
+            fill('Es la ___.', 'una', 'It is one o’clock.', {
+              note: 'One o’clock takes es la; every other hour takes son las.',
+            }),
+          ]),
+        ]),
       ],
     },
     {
@@ -305,246 +298,255 @@ export const spanish: Course = {
       subtitle: 'Family, colours, home, and the shape of your day.',
       accent: 'azure',
       modules: [
-        {
-          id: 's2-m1',
-          title: 'Family',
-          subtitle: 'Introduce your relatives',
-          exercises: [
-            {
-              id: 's2-m1-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'la madre', right: 'mother' },
-                { left: 'el padre', right: 'father' },
-                { left: 'la hermana', right: 'sister' },
-                { left: 'el hijo', right: 'son' },
-              ],
-            },
-            {
-              id: 's2-m1-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'Mi abuela',
-              options: [
-                'My aunt',
-                'My grandmother',
-                'My cousin',
-                'My niece',
-              ],
-              answer: 1,
-            },
-            {
-              id: 's2-m1-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Mi ___ se llama Carlos.',
-              answer: 'hermano',
-              translation: 'My brother is called Carlos.',
-            },
-            {
-              id: 's2-m1-e4',
-              type: 'multiple-choice',
-              prompt: 'Pick the correct sentence',
-              question: 'We have a big family.',
-              options: [
-                'Tenemos una familia grande.',
+        defineModule('s2-m1', 'Family', 'Introduce your relatives', [
+          part('Words', [
+            match([
+              ['la madre', 'mother'],
+              ['el padre', 'father'],
+              ['la hermana', 'sister'],
+              ['el hijo', 'son'],
+            ]),
+            choose('Choose the translation', 'Mi abuela', 'My grandmother', [
+              'My aunt',
+              'My cousin',
+              'My niece',
+            ]),
+            match([
+              ['el abuelo', 'grandfather'],
+              ['la tía', 'aunt'],
+              ['el primo', 'cousin'],
+              ['la hija', 'daughter'],
+            ]),
+            choose('How do you say this?', 'The brother', 'El hermano', [
+              'El hijo',
+              'El padre',
+              'El primo',
+            ]),
+            choose('Choose the translation', 'Los padres', 'The parents', [
+              'The brothers',
+              'The grandparents',
+              'The children',
+            ]),
+          ]),
+          part('Sentences', [
+            fill(
+              'Mi ___ se llama Carlos.',
+              'hermano',
+              'My brother is called Carlos.',
+            ),
+            choose(
+              'Pick the correct sentence',
+              'We have a big family.',
+              'Tenemos una familia grande.',
+              [
                 'Tienen una familia grande.',
                 'Tengo una familia pequeña.',
                 'Tienes una familia grande.',
               ],
-              answer: 0,
-            },
-            {
-              id: 's2-m1-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Ella ___ dos hijas.',
-              answer: 'tiene',
-              translation: 'She has two daughters.',
-            },
-          ],
-        },
-        {
-          id: 's2-m2',
-          title: 'Colours & Things',
-          subtitle: 'Describe objects around you',
-          exercises: [
-            {
-              id: 's2-m2-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'rojo', right: 'red' },
-                { left: 'azul', right: 'blue' },
-                { left: 'verde', right: 'green' },
-                { left: 'negro', right: 'black' },
+            ),
+            fill('Ella ___ dos hijas.', 'tiene', 'She has two daughters.'),
+            fill(
+              'Mis ___ viven en Madrid.',
+              'abuelos',
+              'My grandparents live in Madrid.',
+            ),
+            choose(
+              'Pick the correct sentence',
+              'My sister is tall.',
+              'Mi hermana es alta.',
+              [
+                'Mi hermana es alto.',
+                'Mi hermano es alta.',
+                'Mis hermanas es alta.',
               ],
-            },
-            {
-              id: 's2-m2-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'La mesa',
-              options: [
+            ),
+          ]),
+        ]),
+        defineModule(
+          's2-m2',
+          'Colours & Things',
+          'Describe objects around you',
+          [
+            part('Words', [
+              match([
+                ['rojo', 'red'],
+                ['azul', 'blue'],
+                ['verde', 'green'],
+                ['negro', 'black'],
+              ]),
+              choose('Choose the translation', 'La mesa', 'The table', [
                 'The chair',
-                'The table',
                 'The door',
                 'The window',
-              ],
-              answer: 1,
-            },
-            {
-              id: 's2-m2-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'El libro es ___.',
-              answer: 'blanco',
-              translation: 'The book is white.',
-            },
-            {
-              id: 's2-m2-e4',
-              type: 'multiple-choice',
-              prompt: 'How do you say this?',
-              question: 'The yellow chair',
-              options: [
+              ]),
+              choose(
+                'How do you say this?',
+                'The yellow chair',
                 'La silla amarilla',
-                'La amarilla silla',
-                'El silla amarillo',
-                'La silla amarillo',
-              ],
-              answer: 0,
-              note: 'The adjective follows the noun and matches its gender.',
-            },
-            {
-              id: 's2-m2-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Las puertas son ___.',
-              answer: 'verdes',
-              translation: 'The doors are green.',
-              note: 'Adjectives take a plural -s when the noun is plural.',
-            },
+                ['La amarilla silla', 'El silla amarillo', 'La silla amarillo'],
+                'The adjective follows the noun and matches its gender.',
+              ),
+              match([
+                ['la silla', 'chair'],
+                ['la puerta', 'door'],
+                ['el libro', 'book'],
+                ['el coche', 'car'],
+              ]),
+              choose('Choose the translation', 'Blanco', 'White', [
+                'Black',
+                'Grey',
+                'Yellow',
+              ]),
+            ]),
+            part('Sentences', [
+              fill('El libro es ___.', 'blanco', 'The book is white.'),
+              fill('Las puertas son ___.', 'verdes', 'The doors are green.', {
+                note: 'Adjectives take a plural -s when the noun is plural.',
+              }),
+              fill('La mesa es ___.', 'negra', 'The table is black.', {
+                note: 'Mesa is feminine, so negro becomes negra.',
+              }),
+              choose(
+                'How do you say this?',
+                'The red cars',
+                'Los coches rojos',
+                ['Los coches rojo', 'Los rojos coches', 'El coche rojos'],
+              ),
+              fill('Tengo un libro ___.', 'azul', 'I have a blue book.'),
+            ]),
           ],
-        },
-        {
-          id: 's2-m3',
-          title: 'At Home',
-          subtitle: 'Rooms and where things are',
-          exercises: [
-            {
-              id: 's2-m3-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'la cocina', right: 'kitchen' },
-                { left: 'el baño', right: 'bathroom' },
-                { left: 'la cama', right: 'bed' },
-                { left: 'la ventana', right: 'window' },
-              ],
-            },
-            {
-              id: 's2-m3-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'La casa',
-              options: [
-                'The room',
-                'The house',
-                'The street',
-                'The floor',
-              ],
-              answer: 1,
-            },
-            {
-              id: 's2-m3-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'El gato está en la ___.',
-              answer: 'cocina',
-              translation: 'The cat is in the kitchen.',
-            },
-            {
-              id: 's2-m3-e4',
-              type: 'multiple-choice',
-              prompt: 'Pick the correct sentence',
-              question: 'The book is on the table.',
-              options: [
-                'El libro está en la mesa.',
+        ),
+        defineModule('s2-m3', 'At Home', 'Rooms and where things are', [
+          part('Words', [
+            match([
+              ['la cocina', 'kitchen'],
+              ['el baño', 'bathroom'],
+              ['la cama', 'bed'],
+              ['la ventana', 'window'],
+            ]),
+            choose('Choose the translation', 'La casa', 'The house', [
+              'The room',
+              'The street',
+              'The floor',
+            ]),
+            match([
+              ['el dormitorio', 'bedroom'],
+              ['el salón', 'living room'],
+              ['la mesa', 'table'],
+              ['el sofá', 'sofa'],
+            ]),
+            choose('Choose the translation', 'El jardín', 'The garden', [
+              'The kitchen',
+              'The garage',
+              'The balcony',
+            ]),
+            choose('How do you say this?', 'The bathroom', 'El baño', [
+              'La cocina',
+              'La cama',
+              'El salón',
+            ]),
+          ]),
+          part('Sentences', [
+            fill(
+              'El gato está en la ___.',
+              'cocina',
+              'The cat is in the kitchen.',
+            ),
+            choose(
+              'Pick the correct sentence',
+              'The book is on the table.',
+              'El libro está en la mesa.',
+              [
                 'El libro es en la mesa.',
                 'La mesa está en el libro.',
                 'El libro está la mesa.',
               ],
-              answer: 0,
-              note: 'Location uses estar, never ser.',
-            },
-            {
-              id: 's2-m3-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Vivo en un ___ pequeño.',
-              answer: 'apartamento',
-              alternates: ['piso'],
-              translation: 'I live in a small apartment.',
-            },
-          ],
-        },
-        {
-          id: 's2-m4',
-          title: 'Daily Routine',
-          subtitle: 'Say what you do and when',
-          exercises: [
-            {
-              id: 's2-m4-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'hoy', right: 'today' },
-                { left: 'mañana', right: 'tomorrow' },
-                { left: 'siempre', right: 'always' },
-                { left: 'nunca', right: 'never' },
+              'Location uses estar, never ser.',
+            ),
+            fill(
+              'Vivo en un ___ pequeño.',
+              'apartamento',
+              'I live in a small apartment.',
+              { alternates: ['piso'] },
+            ),
+            fill(
+              'Mi casa tiene tres ___.',
+              'dormitorios',
+              'My house has three bedrooms.',
+            ),
+            choose(
+              'Pick the correct sentence',
+              'The keys are in the kitchen.',
+              'Las llaves están en la cocina.',
+              [
+                'Las llaves son en la cocina.',
+                'Las llaves está en la cocina.',
+                'La llave están en la cocina.',
               ],
-            },
-            {
-              id: 's2-m4-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'Yo trabajo',
-              options: ['I work', 'I sleep', 'I walk', 'I read'],
-              answer: 0,
-            },
-            {
-              id: 's2-m4-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: '___ café todas las mañanas.',
-              answer: 'Bebo',
-              alternates: ['Tomo'],
-              translation: 'I drink coffee every morning.',
-            },
-            {
-              id: 's2-m4-e4',
-              type: 'multiple-choice',
-              prompt: 'Pick the correct sentence',
-              question: 'She reads every night.',
-              options: [
-                'Ella lee todas las noches.',
+            ),
+          ]),
+        ]),
+        defineModule('s2-m4', 'Daily Routine', 'Say what you do and when', [
+          part('Words', [
+            match([
+              ['hoy', 'today'],
+              ['mañana', 'tomorrow'],
+              ['siempre', 'always'],
+              ['nunca', 'never'],
+            ]),
+            choose('Choose the translation', 'Yo trabajo', 'I work', [
+              'I sleep',
+              'I walk',
+              'I read',
+            ]),
+            match([
+              ['dormir', 'to sleep'],
+              ['comer', 'to eat'],
+              ['leer', 'to read'],
+              ['trabajar', 'to work'],
+            ]),
+            choose('Choose the translation', 'A veces', 'Sometimes', [
+              'Always',
+              'Never',
+              'Later',
+            ]),
+            choose('How do you say this?', 'At night', 'Por la noche', [
+              'Por la mañana',
+              'Por la tarde',
+              'Mañana',
+            ]),
+          ]),
+          part('Sentences', [
+            fill(
+              '___ café todas las mañanas.',
+              'Bebo',
+              'I drink coffee every morning.',
+              { alternates: ['Tomo'] },
+            ),
+            choose(
+              'Pick the correct sentence',
+              'She reads every night.',
+              'Ella lee todas las noches.',
+              [
                 'Ella lee todos los días.',
                 'Él lee todas las noches.',
                 'Ella come todas las noches.',
               ],
-              answer: 0,
-            },
-            {
-              id: 's2-m4-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Me gusta ___ por la mañana.',
-              answer: 'correr',
-              translation: 'I like to run in the morning.',
-            },
-          ],
-        },
+            ),
+            fill(
+              'Me gusta ___ por la mañana.',
+              'correr',
+              'I like to run in the morning.',
+            ),
+            fill('Me levanto a las ___.', 'siete', 'I get up at seven.'),
+            choose(
+              'Pick the correct sentence',
+              'We eat at two.',
+              'Comemos a las dos.',
+              ['Comen a las dos.', 'Comemos a la dos.', 'Comemos en las dos.'],
+            ),
+          ]),
+        ]),
       ],
     },
     {
@@ -553,248 +555,269 @@ export const spanish: Course = {
       subtitle: 'Find your way, eat well, and catch the train.',
       accent: 'violet',
       modules: [
-        {
-          id: 's3-m1',
-          title: 'Around Town',
-          subtitle: 'Places you pass every day',
-          exercises: [
-            {
-              id: 's3-m1-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'la tienda', right: 'shop' },
-                { left: 'la calle', right: 'street' },
-                { left: 'el parque', right: 'park' },
-                { left: 'la estación', right: 'station' },
-              ],
-            },
-            {
-              id: 's3-m1-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'El mercado',
-              options: [
-                'The museum',
-                'The market',
-                'The hospital',
-                'The bank',
-              ],
-              answer: 1,
-            },
-            {
-              id: 's3-m1-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Voy al ___ los domingos.',
-              answer: 'parque',
-              translation: 'I go to the park on Sundays.',
-            },
-            {
-              id: 's3-m1-e4',
-              type: 'multiple-choice',
-              prompt: 'How do you ask this?',
-              question: 'Where is the bank?',
-              options: [
-                '¿Dónde está el banco?',
+        defineModule('s3-m1', 'Around Town', 'Places you pass every day', [
+          part('Words', [
+            match([
+              ['la tienda', 'shop'],
+              ['la calle', 'street'],
+              ['el parque', 'park'],
+              ['la estación', 'station'],
+            ]),
+            choose('Choose the translation', 'El mercado', 'The market', [
+              'The museum',
+              'The hospital',
+              'The bank',
+            ]),
+            match([
+              ['el banco', 'bank'],
+              ['el museo', 'museum'],
+              ['la plaza', 'square'],
+              ['el hospital', 'hospital'],
+            ]),
+            choose(
+              'Choose the translation',
+              'La biblioteca',
+              'The library',
+              ['The bookshop', 'The school', 'The bank'],
+              'Careful — librería is a bookshop, not a library.',
+            ),
+            choose('How do you say this?', 'The street', 'La calle', [
+              'La plaza',
+              'La tienda',
+              'El puente',
+            ]),
+          ]),
+          part('Sentences', [
+            fill(
+              'Voy al ___ los domingos.',
+              'parque',
+              'I go to the park on Sundays.',
+            ),
+            choose(
+              'How do you ask this?',
+              'Where is the bank?',
+              '¿Dónde está el banco?',
+              [
                 '¿Cómo está el banco?',
                 '¿Cuándo es el banco?',
                 '¿Dónde va el banco?',
               ],
-              answer: 0,
-            },
-            {
-              id: 's3-m1-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'La tienda está ___ del museo.',
-              answer: 'cerca',
-              translation: 'The shop is near the museum.',
-            },
-          ],
-        },
-        {
-          id: 's3-m2',
-          title: 'Directions',
-          subtitle: 'Ask the way and follow it',
-          exercises: [
-            {
-              id: 's3-m2-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'izquierda', right: 'left' },
-                { left: 'derecha', right: 'right' },
-                { left: 'recto', right: 'straight ahead' },
-                { left: 'la esquina', right: 'the corner' },
+            ),
+            fill(
+              'La tienda está ___ del museo.',
+              'cerca',
+              'The shop is near the museum.',
+            ),
+            fill(
+              'El museo está ___ la plaza.',
+              'en',
+              'The museum is in the square.',
+            ),
+            choose(
+              'How do you ask this?',
+              'Is there a pharmacy near here?',
+              '¿Hay una farmacia cerca de aquí?',
+              [
+                '¿Es una farmacia cerca de aquí?',
+                '¿Está una farmacia cerca de aquí?',
+                '¿Hay una farmacia lejos de aquí?',
               ],
-            },
-            {
-              id: 's3-m2-e2',
-              type: 'multiple-choice',
-              prompt: 'What does this mean?',
-              question: 'Gire a la derecha',
-              options: [
-                'Turn left',
-                'Turn right',
-                'Go straight',
-                'Stop here',
-              ],
-              answer: 1,
-            },
-            {
-              id: 's3-m2-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Siga ___ dos calles.',
-              answer: 'recto',
-              alternates: ['derecho'],
-              translation: 'Continue straight for two blocks.',
-            },
-            {
-              id: 's3-m2-e4',
-              type: 'multiple-choice',
-              prompt: 'Pick the correct sentence',
-              question: 'It is far from here.',
-              options: [
-                'Está lejos de aquí.',
+              'Hay asks whether something exists; está asks where a known thing is.',
+            ),
+          ]),
+        ]),
+        defineModule('s3-m2', 'Directions', 'Ask the way and follow it', [
+          part('Words', [
+            match([
+              ['izquierda', 'left'],
+              ['derecha', 'right'],
+              ['recto', 'straight ahead'],
+              ['la esquina', 'the corner'],
+            ]),
+            choose('What does this mean?', 'Gire a la derecha', 'Turn right', [
+              'Turn left',
+              'Go straight',
+              'Stop here',
+            ]),
+            match([
+              ['cerca', 'near'],
+              ['lejos', 'far'],
+              ['aquí', 'here'],
+              ['allí', 'there'],
+            ]),
+            choose('Choose the translation', 'Todo recto', 'Straight ahead', [
+              'Turn around',
+              'On the left',
+              'At the corner',
+            ]),
+            choose('How do you say this?', 'On the left', 'A la izquierda', [
+              'A la derecha',
+              'Todo recto',
+              'En la esquina',
+            ]),
+          ]),
+          part('Sentences', [
+            fill(
+              'Siga ___ dos calles.',
+              'recto',
+              'Continue straight for two blocks.',
+              { alternates: ['derecho'] },
+            ),
+            choose(
+              'Pick the correct sentence',
+              'It is far from here.',
+              'Está lejos de aquí.',
+              [
                 'Está cerca de aquí.',
                 'Es lejos de aquí.',
                 'Está lejos de allí.',
               ],
-              answer: 0,
-            },
-            {
-              id: 's3-m2-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: '¿Puede ___ dónde está el hotel?',
-              answer: 'decirme',
-              translation: 'Can you tell me where the hotel is?',
-            },
-          ],
-        },
-        {
-          id: 's3-m3',
-          title: 'At the Restaurant',
-          subtitle: 'Order, ask, and pay',
-          exercises: [
-            {
-              id: 's3-m3-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'la carta', right: 'the menu' },
-                { left: 'la cuenta', right: 'the bill' },
-                { left: 'el camarero', right: 'the waiter' },
-                { left: 'el plato', right: 'the dish' },
+            ),
+            fill(
+              '¿Puede ___ dónde está el hotel?',
+              'decirme',
+              'Can you tell me where the hotel is?',
+            ),
+            fill(
+              'Gire a la ___ en la esquina.',
+              'izquierda',
+              'Turn left at the corner.',
+            ),
+            choose(
+              'Pick the correct sentence',
+              'The hotel is next to the station.',
+              'El hotel está al lado de la estación.',
+              [
+                'El hotel es al lado de la estación.',
+                'El hotel está al lado del estación.',
+                'El hotel está lejos de la estación.',
               ],
-            },
-            {
-              id: 's3-m3-e2',
-              type: 'multiple-choice',
-              prompt: 'What does this mean?',
-              question: 'Para mí, la sopa',
-              options: [
-                'For me, the soup',
-                'With me, the soup',
-                'I make soup',
-                'I want salad',
+            ),
+          ]),
+        ]),
+        defineModule('s3-m3', 'At the Restaurant', 'Order, ask, and pay', [
+          part('Words', [
+            match([
+              ['la carta', 'the menu'],
+              ['la cuenta', 'the bill'],
+              ['el camarero', 'the waiter'],
+              ['el plato', 'the dish'],
+            ]),
+            choose(
+              'What does this mean?',
+              'Para mí, la sopa',
+              'For me, the soup',
+              ['With me, the soup', 'I make soup', 'I want salad'],
+            ),
+            match([
+              ['el pollo', 'chicken'],
+              ['la ensalada', 'salad'],
+              ['el postre', 'dessert'],
+              ['la bebida', 'drink'],
+            ]),
+            choose('Choose the translation', 'La propina', 'The tip', [
+              'The bill',
+              'The menu',
+              'The change',
+            ]),
+            choose('How do you say this?', 'The menu', 'La carta', [
+              'La cuenta',
+              'El plato',
+              'La mesa',
+            ]),
+          ]),
+          part('Sentences', [
+            fill('La ___, por favor.', 'cuenta', 'The bill, please.'),
+            choose(
+              'How do you say this?',
+              'I would like a coffee.',
+              'Quisiera un café.',
+              ['Quiero ser café.', 'Tengo un café.', 'Me gusta el café.'],
+              'Quisiera is a softer, more polite way to say quiero.',
+            ),
+            fill('¿Qué me ___?', 'recomienda', 'What do you recommend?'),
+            fill(
+              'Una mesa para ___, por favor.',
+              'dos',
+              'A table for two, please.',
+            ),
+            choose(
+              'Pick the correct sentence',
+              'The food is delicious.',
+              'La comida está deliciosa.',
+              [
+                'La comida es delicioso.',
+                'La comida está delicioso.',
+                'El comida está deliciosa.',
               ],
-              answer: 0,
-            },
-            {
-              id: 's3-m3-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'La ___, por favor.',
-              answer: 'cuenta',
-              translation: 'The bill, please.',
-            },
-            {
-              id: 's3-m3-e4',
-              type: 'multiple-choice',
-              prompt: 'How do you say this?',
-              question: 'I would like a coffee.',
-              options: [
-                'Quisiera un café.',
-                'Quiero ser café.',
-                'Tengo un café.',
-                'Me gusta el café.',
-              ],
-              answer: 0,
-              note: 'Quisiera is a softer, more polite way to say quiero.',
-            },
-            {
-              id: 's3-m3-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: '¿Qué me ___?',
-              answer: 'recomienda',
-              translation: 'What do you recommend?',
-            },
-          ],
-        },
-        {
-          id: 's3-m4',
-          title: 'Travel',
-          subtitle: 'Tickets, trains, and goodbyes',
-          exercises: [
-            {
-              id: 's3-m4-e1',
-              type: 'matching',
-              prompt: 'Match the pairs',
-              pairs: [
-                { left: 'el avión', right: 'plane' },
-                { left: 'el billete', right: 'ticket' },
-                { left: 'la maleta', right: 'suitcase' },
-                { left: 'el viaje', right: 'trip' },
-              ],
-            },
-            {
-              id: 's3-m4-e2',
-              type: 'multiple-choice',
-              prompt: 'Choose the translation',
-              question: 'El aeropuerto',
-              options: [
-                'The airport',
-                'The harbour',
-                'The platform',
-                'The border',
-              ],
-              answer: 0,
-            },
-            {
-              id: 's3-m4-e3',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Mi ___ sale a las ocho.',
-              answer: 'tren',
-              translation: 'My train leaves at eight.',
-            },
-            {
-              id: 's3-m4-e4',
-              type: 'multiple-choice',
-              prompt: 'How do you ask this?',
-              question: 'How much does the ticket cost?',
-              options: [
-                '¿Cuánto cuesta el billete?',
+            ),
+          ]),
+        ]),
+        defineModule('s3-m4', 'Travel', 'Tickets, trains, and goodbyes', [
+          part('Words', [
+            match([
+              ['el avión', 'plane'],
+              ['el billete', 'ticket'],
+              ['la maleta', 'suitcase'],
+              ['el viaje', 'trip'],
+            ]),
+            choose('Choose the translation', 'El aeropuerto', 'The airport', [
+              'The harbour',
+              'The platform',
+              'The border',
+            ]),
+            match([
+              ['el tren', 'train'],
+              ['el pasaporte', 'passport'],
+              ['el hotel', 'hotel'],
+              ['la playa', 'beach'],
+            ]),
+            choose('Choose the translation', 'La maleta', 'The suitcase', [
+              'The ticket',
+              'The passport',
+              'The map',
+            ]),
+            choose('How do you say this?', 'The ticket', 'El billete', [
+              'La maleta',
+              'El viaje',
+              'El andén',
+            ]),
+          ]),
+          part('Sentences', [
+            fill(
+              'Mi ___ sale a las ocho.',
+              'tren',
+              'My train leaves at eight.',
+            ),
+            choose(
+              'How do you ask this?',
+              'How much does the ticket cost?',
+              '¿Cuánto cuesta el billete?',
+              [
                 '¿Cuándo cuesta el billete?',
                 '¿Dónde cuesta el billete?',
                 '¿Cuánto cuesta el viaje?',
               ],
-              answer: 0,
-            },
-            {
-              id: 's3-m4-e5',
-              type: 'fill-blank',
-              prompt: 'Fill in the blank',
-              sentence: 'Buen ___.',
-              answer: 'viaje',
-              translation: 'Have a good trip.',
-            },
-          ],
-        },
+            ),
+            fill('Buen ___.', 'viaje', 'Have a good trip.'),
+            fill(
+              'Necesito un billete ___ Sevilla.',
+              'para',
+              'I need a ticket to Seville.',
+              { alternates: ['a'] },
+            ),
+            choose(
+              'How do you ask this?',
+              'What time does the train leave?',
+              '¿A qué hora sale el tren?',
+              [
+                '¿Qué hora es el tren?',
+                '¿A qué hora llega el tren?',
+                '¿Cuándo es la hora del tren?',
+              ],
+            ),
+          ]),
+        ]),
       ],
     },
   ],

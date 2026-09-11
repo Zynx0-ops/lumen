@@ -1,42 +1,25 @@
-import { CoursePicker } from './CoursePicker'
-import { Button } from './ui/Button'
-import { ProgressBar } from './ui/ProgressBar'
-import { ResetButton } from './ui/ResetButton'
-import { ChevronIcon } from './ui/Icons'
-import { accentVars } from '../lib/accent'
-import {
-  courseTally,
-  sectionTally,
-  type ModuleRef,
-  type Tally,
-} from '../lib/progress'
-import { ACCENTS, type AccentName, type Course } from '../types'
+import { Button } from '../ui/Button'
+import { ChevronIcon } from '../ui/Icons'
+import { ProgressBar } from '../ui/ProgressBar'
+import { ResetButton } from '../ui/ResetButton'
+import { courseTally, sectionTally, type ModuleRef } from '../../lib/progress'
+import { ACCENTS, type Course } from '../../types'
 
-interface CourseSidebarProps {
+interface LearnSidebarProps {
   course: Course
-  /** Every course on offer, for the language picker. */
-  courses: Course[]
   completed: ReadonlySet<string>
   next: ModuleRef | null
-  accent: AccentName
-  /** Module counts per course id, shown in the picker. */
-  tallies: Map<string, Tally>
-  onSelectCourse: (courseId: string) => void
   onContinue: () => void
   onReset: () => void
 }
 
-export function CourseSidebar({
+export function LearnSidebar({
   course,
-  courses,
   completed,
   next,
-  accent,
-  tallies,
-  onSelectCourse,
   onContinue,
   onReset,
-}: CourseSidebarProps) {
+}: LearnSidebarProps) {
   const overall = courseTally(course, completed)
   const started = overall.done > 0
 
@@ -47,17 +30,7 @@ export function CourseSidebar({
   }
 
   return (
-    <aside
-      className="sticky top-0 hidden h-dvh w-72 shrink-0 flex-col gap-6 overflow-y-auto py-10 lg:flex"
-      style={accentVars(accent)}
-    >
-      <CoursePicker
-        courses={courses}
-        active={course}
-        tallies={tallies}
-        onSelect={onSelectCourse}
-      />
-
+    <>
       <div className="rounded-card border border-hairline bg-elevated p-5 sheen">
         <div className="flex items-baseline justify-between">
           <span className="text-[13px] text-muted">Course progress</span>
@@ -105,7 +78,7 @@ export function CourseSidebar({
         </div>
       )}
 
-      <nav className="flex flex-col gap-1">
+      <nav aria-label="Sections" className="flex flex-col gap-1">
         <p className="px-3 pb-2 text-[11px] font-medium tracking-widest text-faint uppercase">
           Sections
         </p>
@@ -122,7 +95,7 @@ export function CourseSidebar({
               }`}
             >
               <span
-                className="size-2 shrink-0 rounded-full transition-opacity"
+                className="size-2 shrink-0 rounded-full"
                 style={{
                   backgroundColor: ACCENTS[section.accent],
                   opacity: tally.done > 0 ? 1 : 0.28,
@@ -146,6 +119,6 @@ export function CourseSidebar({
       <div className="mt-auto pt-4">
         <ResetButton onReset={onReset} />
       </div>
-    </aside>
+    </>
   )
 }

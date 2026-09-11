@@ -1,7 +1,7 @@
-import { ProgressBar } from './ui/ProgressBar'
-import { LockIcon } from './ui/Icons'
-import type { Tally } from '../lib/progress'
-import type { Section } from '../types'
+import { ProgressBar } from '../ui/ProgressBar'
+import { LockIcon } from '../ui/Icons'
+import type { Tally } from '../../lib/progress'
+import type { Section } from '../../types'
 
 interface SectionHeaderProps {
   section: Section

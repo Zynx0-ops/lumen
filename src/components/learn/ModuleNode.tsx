@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { BoltIcon, CheckIcon, LockIcon } from './ui/Icons'
-import type { Module, ModuleStatus } from '../types'
+import { BoltIcon, CheckIcon, LockIcon } from '../ui/Icons'
+import type { Module, ModuleStatus } from '../../types'
 
 interface ModuleNodeProps {
   module: Module

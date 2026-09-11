@@ -6,6 +6,8 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant
   /** Stretch to the container width — used for the lesson footer action. */
   block?: boolean
+  /** `sm` for buttons that sit inside cards and toolbars. */
+  size?: 'md' | 'sm'
   children: ReactNode
 }
 
@@ -22,6 +24,7 @@ const VARIANTS: Record<Variant, string> = {
 export function Button({
   variant = 'neutral',
   block = false,
+  size = 'md',
   className = '',
   children,
   ...rest
@@ -29,8 +32,10 @@ export function Button({
   return (
     <button
       className={[
-        'inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-3.5',
-        'text-[15px] font-semibold tracking-tight',
+        'inline-flex items-center justify-center gap-2 font-semibold tracking-tight',
+        size === 'sm'
+          ? 'rounded-xl px-4 py-2.5 text-[14px]'
+          : 'rounded-2xl px-6 py-3.5 text-[15px]',
         'transition-all duration-200 ease-out active:scale-[0.97]',
         'disabled:pointer-events-none disabled:opacity-30',
         VARIANTS[variant],

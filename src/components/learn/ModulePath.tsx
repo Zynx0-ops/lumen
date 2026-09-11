@@ -1,5 +1,5 @@
 import { ModuleNode, NODE_SIZE } from './ModuleNode'
-import { ACCENTS, type Module, type ModuleStatus, type Section } from '../types'
+import { ACCENTS, type Module, type ModuleStatus, type Section } from '../../types'
 
 /** Logical width of the path column; nodes are placed inside it in pixels. */
 const COLUMN = 288

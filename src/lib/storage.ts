@@ -1,6 +1,8 @@
+import { parseSet, type CardSet } from './sets'
+
 /**
- * The app's entire persistence layer: which course you are on, and which
- * modules you have finished in each. Everything is per-device localStorage —
+ * The app's entire persistence layer: which course you are on, which modules
+ * you have finished in each, and your flashcard sets. Everything is per-device localStorage —
  * there is no account and nothing leaves the browser.
  *
  * Every call is guarded: private browsing, disabled storage and corrupt JSON
@@ -9,6 +11,7 @@
 
 const PROGRESS_KEY = 'lumen.progress.v1'
 const ACTIVE_KEY = 'lumen.course.v1'
+const SETS_KEY = 'lumen.sets.v1'
 
 export function readCompleted(courseId: string): Set<string> {
   try {
@@ -50,5 +53,27 @@ export function writeActiveCourse(courseId: string): void {
     localStorage.setItem(ACTIVE_KEY, courseId)
   } catch {
     // Non-fatal: the app just opens on the first course next time.
+  }
+}
+
+/** Every saved set, across all courses. Anything malformed is dropped. */
+export function readSets(): CardSet[] {
+  try {
+    const raw = localStorage.getItem(SETS_KEY)
+    if (!raw) return []
+    const parsed: unknown = JSON.parse(raw)
+    return Array.isArray(parsed)
+      ? parsed.map(parseSet).filter((set): set is CardSet => set !== null)
+      : []
+  } catch {
+    return []
+  }
+}
+
+export function writeSets(sets: CardSet[]): void {
+  try {
+    localStorage.setItem(SETS_KEY, JSON.stringify(sets))
+  } catch {
+    // Storage full or unavailable — the sets survive until the tab closes.
   }
 }
